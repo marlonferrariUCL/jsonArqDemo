@@ -1,0 +1,5 @@
+[{"codItem": "456", "desc": "outro", "medida": "un", "fabricante": "UCL", "quantidade": "3", "precunit": "2,22"},
+  {"codItem": "123", "desc": "teste", "medida": "un", "fabricante": "UCL", "quantidade": "3", "precunit": "1,99"},
+  {"codItem": "999", "desc": "FINAL", "medida": "lt", "fabricante": "SEXTOU", "quantidade": "30", "precunit": "9,99"},
+  {"codItem": "333", "desc": "outro2", "medida": "un", "fabricante": "TESTE222", "quantidade": "2", "precunit": "10"},
+  {"codItem": "", "desc": "", "medida": "", "fabricante": "", "quantidade": "", "precunit": ""}]
