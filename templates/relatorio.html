@@ -43,13 +43,13 @@
 							<div class="panel-heading">
 							  <h4 class="panel-title">
 								<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-								Files</a>
+								Total de Produtos Por Categoria</a>
 							  </h4>
 							</div>
 							<div id="collapse1" class="panel-collapse collapse in">
 								<ul class="list-group">
-                                    {% for cat, qtd in diciCat.items()  %}
-									    <li class="list-group-item"><span class="badge">{{ qtd }}</span> {{ cat }}</li>
+                                    {% for cat, qtd in diciProdEstoque.items()  %}
+									    <li class="list-group-item"><span class="badge">{{ qtd[1] }}/{{ qtd[0] }}</span> {{ cat }}</li>
                                     {% endfor %}
 								</ul>
 							</div>
@@ -60,13 +60,16 @@
 						<div class="row">
 							<div class="col col-md-5">
 								<h4>Capacidade Ocupada do Estoque Por Categoria:</h4>
-                                {% for cat, qtd in diciCat.items()  %}
+                                {% for cat, qtd in diciProdEstoque.items()  %}
 										{{ cat }}<span class="pull-right strong"></span>
 										 <div class="progress">
-                                             {% if qtd/6 < 0.50 %}
-											    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width:{{ (qtd/6)*100 }}%">
-                                                    {{ (qtd/6)*100 }}%</div>
-                                             {% endif %}
+                                                {% if  (qtd[1]/qtd[0])*100 >= 100 or  (qtd[1]/qtd[0])*100 < 20 %}
+											    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width:{{ (qtd[1]/qtd[0])*100 }}%">
+                                                    {{ (qtd[1]/qtd[0])*100 }}%</div>
+                                                {% else %}
+ 											    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width:{{ (qtd[1]/qtd[0])*100 }}%">
+                                                    {{ (qtd[1]/qtd[0])*100 }}%</div>
+                                                {% endif %}
 										</div>
                                 {% endfor %}
 							</div>

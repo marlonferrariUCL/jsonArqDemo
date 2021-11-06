@@ -3,6 +3,47 @@ import json
 
 app = Flask(__name__)
 
+def joinProdEstoque():
+    #le os dados
+    arq = open('capEstoque.json', 'r')
+    est = json.load(arq)
+    arq = open('estoque.json', 'r')
+    prod = json.load(arq)
+    arq = open('codProd.json', 'r')
+    desc = json.load(arq)
+    #cria o dicionario das categorias no estoque
+    chaves = [x for x in est.keys()]
+    diciProdEst = {}
+    for chave in chaves:
+        diciProdEst[chave] = []
+    #adiciona a capacidade da categoria no dicionario
+    #{'beb': [100], 'frig': [20], 'limp': [350], 'vest': [50]}
+    for chave, valor in est.items():
+        diciProdEst[chave].append(valor)
+    #cria a soma total das categorias existentes nos produtos do estoque
+    #{'beb': 103, 'vest': 2}
+    aux = {}
+    for produto in prod:
+        aux[produto['categoria']] = 0
+    for produto in prod:
+        aux[produto['categoria']] += int(produto['quantidade'])
+    #adicionar os totais do estoque no dicionario
+    for chave, valor in aux.items():
+        diciProdEst[chave].append(valor)
+    #cria os zeros nas categorias sem estoque
+    for chave, valor in diciProdEst.items():
+        if len(valor) < 2:
+            diciProdEst[chave].append(0)
+    #{'beb': [100, 103], 'frig': [20, 0], 'limp': [350, 0], 'vest': [50, 2]}
+    #cria o dicionario com chaves da descricao
+    diciProdEstMelhor = {}
+    for codigo, descricao in desc.items():
+        diciProdEstMelhor[descricao] = codigo
+    #transfere os valores do dicionario antigo para o novo
+    for chave, id in diciProdEstMelhor.items():
+        diciProdEstMelhor[chave] = diciProdEst[id]
+    #{'Bebida': [100, 103], 'Frigorífico': [20, 0], 'Limpeza': [350, 0],'Vestuário': [50, 2]}
+    return diciProdEstMelhor
 
 @app.route('/', methods=['get'])
 def hello_world():  # put application's code here
@@ -53,7 +94,8 @@ def relatorio():
     #CONTAGEM DOS ITENS
     for d in dados:
         diciCat[d['categoria']] += 1
-    return render_template('relatorio.html', diciCat=diciCat)
+    diciProdEstoque = joinProdEstoque()
+    return render_template('relatorio.html', diciCat=diciCat, diciProdEstoque=diciProdEstoque)
 
 if __name__ == '__main__':
     app.run()
